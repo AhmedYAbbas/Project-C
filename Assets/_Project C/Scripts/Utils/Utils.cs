@@ -1,3 +1,4 @@
+using CodeMonkey.Utils;
 using TMPro;
 using UnityEngine;
 
@@ -44,7 +45,10 @@ public static class Utils
     }
     public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPosition, Camera worldCamera)
     {
-        Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
-        return worldPosition;
+        Ray ray = worldCamera.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f))
+            return raycastHit.point;
+        else
+            return Vector3.zero;
     }
 }

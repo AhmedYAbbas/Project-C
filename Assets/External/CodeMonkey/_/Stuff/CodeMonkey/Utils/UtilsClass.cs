@@ -119,7 +119,7 @@ namespace CodeMonkey.Utils {
 
         // Create a Text Popup in the World, no parent
         public static void CreateWorldTextPopup(string text, Vector3 localPosition) {
-            CreateWorldTextPopup(null, text, localPosition, 40, Color.white, localPosition + new Vector3(0, 20), 1f);
+            CreateWorldTextPopup(null, text, localPosition, 20, Color.white, localPosition + new Vector3(0, 10), 1f);
         }
         
         // Create a Text Popup in the World
@@ -344,10 +344,30 @@ namespace CodeMonkey.Utils {
             float angleRad = angle * (Mathf.PI/180f);
             return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
         }
+        
+        public static Vector3 GetVectorFromAngle(float angle) {
+            // angle = 0 -> 360
+            float angleRad = angle * (Mathf.PI/180f);
+            return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+        }
+        
+        public static Vector3 GetVectorFromAngleInt(int angle) {
+            // angle = 0 -> 360
+            float angleRad = angle * (Mathf.PI/180f);
+            return new Vector3(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+        }
 
         public static float GetAngleFromVectorFloat(Vector3 dir) {
             dir = dir.normalized;
             float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            if (n < 0) n += 360;
+
+            return n;
+        }
+
+        public static float GetAngleFromVectorFloat3D(Vector3 dir) {
+            dir = dir.normalized;
+            float n = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
             if (n < 0) n += 360;
 
             return n;
@@ -375,11 +395,15 @@ namespace CodeMonkey.Utils {
         }
 
         public static Vector3 ApplyRotationToVector(Vector3 vec, float angle) {
-            return Quaternion.Euler(0,0,angle) * vec;
+            return Quaternion.Euler(0, 0, angle) * vec;
+        }
+
+        public static Vector3 ApplyRotationToVectorXZ(Vector3 vec, float angle) {
+            return Quaternion.Euler(0, angle, 0) * vec;
         }
 
 
-        
+
         public static FunctionUpdater CreateMouseDraggingAction(Action<Vector3> onMouseDragging) {
             return CreateMouseDraggingAction(0, onMouseDragging);
         }
